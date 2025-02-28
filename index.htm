@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Clipboard Viewer</title>
+<style>
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+#clipboardContent {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 100px;
+  white-space: pre-wrap; /* Preserve formatting */
+}
+button {
+  margin-bottom: 10px;
+}
+
+</style>
+</head>
+<body>
+  <h1>Clipboard Content</h1>
+  <button id="getClipboard">Get Clipboard Content</button>
+  <div id="clipboardContent"></div>
+
+  <script>
+    const getClipboardButton = document.getElementById('getClipboard');
+    const clipboardContentDiv = document.getElementById('clipboardContent');
+
+    getClipboardButton.addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        clipboardContentDiv.textContent = text;
+      } catch (err) {
+        clipboardContentDiv.textContent = 'Clipboard access denied or empty.';
+        console.error('Failed to read clipboard contents: ', err);
+      }
+    });
+
+  </script>
+</body>
+</html>
+
+Explanation and Key Improvements:
+ * navigator.clipboard.readText():
+   * This is the modern and preferred way to access the clipboard in web browsers.
+   * It returns a promise, so we use async/await for cleaner code.
+   * It only reads text, as reading other data types is much more complex and generally not needed for simple clipboard viewing.
+ * Error Handling:
+   * The try...catch block handles potential errors, such as the user denying clipboard access or the clipboard being empty.
+   * It displays an informative message in the clipboardContent div and logs the error to the console.
+ * User Interface:
+   * A button (Get Clipboard Content) triggers the clipboard reading.
+   * A div (clipboardContent) displays the clipboard's contents.
+   * white-space: pre-wrap; css is added to the div so that formatting, such as new lines, within the clipboard is displayed correctly.
+ * Security:
+   * Clipboard access is subject to browser security restrictions. Users will typically be prompted to grant permission.
+   * The code only reads text. Reading other data types like images or files would require significantly more complex and potentially less secure code.
+ * Simplicity:
+   * The code is kept simple and focused on the core functionality of displaying clipboard text.
+How to Use:
+ * Save the code as an HTML file (e.g., clipboard.html).
+ * Open the file in a web browser.
+ * Click the "Get Clipboard Content" button.
+ * If prompted, grant the website permission to access your clipboard.
+ * The contents of your clipboard will be displayed in the clipboardContent div.
